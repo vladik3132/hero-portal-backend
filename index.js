@@ -2,12 +2,15 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
-// ===== FIREBASE INIT USING SECRET FILE =====
+// ===== FIREBASE INIT USING ENV VARIABLES =====
 const admin = require("firebase-admin");
-const serviceAccount = require("/etc/secrets/firebase-key.json");
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.cert({
+    project_id: process.env.FIREBASE_PROJECT_ID,
+    client_email: process.env.FIREBASE_CLIENT_EMAIL,
+    private_key: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+  }),
 });
 
 // Firestore instance
